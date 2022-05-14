@@ -1,0 +1,53 @@
+* {
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #2d3843;
+  padding: 10px 30px;
+  color: #ccc;
+  box-sizing: border-box;
+}
+
+.buttons {
+  text-align: right;
+}
+
+.row {
+  max-width: 100%;
+  margin: auto;
+}
+
+.col {
+  padding: 0;
+}
+
+.language {
+  background-color: black;
+  margin: auto 20px;
+  width: 90px;
+  height: 30px;
+}
+
+.run-btn {
+  margin: auto 20px;
+}
+
+textarea {
+  resize: none;
+  width: 100%;
+  padding: 10px 30px;
+  border: solid #003a75 4px;
+  background-color: #001e3c;
+  height: 500px;
+  font-family: "Roboto Mono", monospace;
+  box-sizing: border-box;
+}
+
+.output {
+  background-color: #132f4c;
+  min-height: 200px;
+  padding: 10px 30px;
+}
