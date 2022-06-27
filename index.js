@@ -1,7 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
-const axios = require("axios");
+const executeCode = require("./execute");
+
 const path = require("path");
 
 const app = express();
@@ -13,34 +14,6 @@ app.use(express.static(__dirname + "/views/public/"));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-var output = "";
-
-const executeCode = (code, language, input) => {
-  var data = JSON.stringify({
-    code: code,
-    language: language,
-    input: input,
-  });
-
-  var config = {
-    method: "post",
-    url: "https://codexweb.netlify.app/.netlify/functions/enforceCode",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    data: data,
-  };
-
-  axios(config)
-    .then((response) => {
-      output = response.data.output;
-    })
-    .catch((error) => {
-      console.log(error);
-      output = "Some error occured :(";
-    });
-};
-
 app.get("/", (req, res) => {
   res.render("index", {
     output: "",
@@ -50,21 +23,23 @@ app.get("/", (req, res) => {
   });
 });
 
-app.post("/", (req, res) => {
+app.post("/", async (req, res) => {
   const code = req.body.code;
   const language = req.body.language;
   const input = req.body.input;
 
-  executeCode(code, language, input);
+  const output = await executeCode({
+    code: code,
+    language: language,
+    input: input,
+  });
 
-  setTimeout(() => {
-    res.render("index", {
-      output: output,
-      code: code,
-      language: language,
-      input: input,
-    });
-  }, 2000);
+  res.render("index", {
+    output: output,
+    code: code,
+    language: language,
+    input: input,
+  });
 });
 
 app.listen(PORT, () => {
